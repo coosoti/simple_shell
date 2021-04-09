@@ -1,0 +1,14 @@
+.TH Simple Shell 1 "2021-04-09" "V1.0" "Simple Shell Man Page"
+
+.SH NAME
+Simple Shell
+
+.SH DESCRIPTION
+Simple Shell is a command line interpreter that provides a command line user interface.
+
+.SH COMMANDS
+
+
+.SH AUTHORS
+Meron Mamo
+Charles Osoti
