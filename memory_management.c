@@ -61,6 +61,24 @@ char *_realloc2(char *p)
 	*(newptr + i) = '\0';
 	return (newptr);
 }
+/**
+ * free_list - frees a linked_t list
+ * @head: head of the linked list
+ * Return: void
+ */
+
+void free_list(linked_t *head)
+{
+	linked_t *nextnode;
+
+	while (head != NULL)
+	{
+		nextnode = head->next;
+		free(head->directory);
+		free(head);
+		head = nextnode;
+	}
+}
 
 /**
  * free_token - frees the tokens in the t_array array

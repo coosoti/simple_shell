@@ -1,14 +1,15 @@
 #include <stdio.h>
+#include <unistd.h>
 
-int main(void)
+
+/**
+ * main- print the prompt of shell
+ * Return: void
+ **/
+void main()
 {
-	char buffer[1024];
-	int input;
-
-	printf("$ ");
-
-	input = scanf();
-
-	return (0);
-
+	if (isatty(STDIN_FILENO))
+	{
+		putchar(' ');
+	}
 }

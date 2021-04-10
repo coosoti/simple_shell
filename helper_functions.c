@@ -1,6 +1,71 @@
 #include "shell.h"
 
 /**
+ *_strdup - returns pointer to allocated space containing copy of string
+ *@str: string that will be copied into the space
+ *
+ *Return: pointer to allocated space
+ */
+char *_strdup(char *str)
+{
+	int i = 0;
+	int length = 0;
+	char *string;
+
+	if (str == NULL)
+		return (NULL);
+
+	while (*(str + i) != '\0')
+	{
+		length++;
+		i++;
+	}
+
+	i = 0;
+	string = malloc(sizeof(char) * length + 1);
+
+	if (string == NULL)
+		return (NULL);
+
+	while (*(str + i) != '\0')
+	{
+		*(string + i) = *(str + i);
+		i++;
+	}
+	*(string + i) = '\0';
+	return (string);
+}
+
+/**
+ * _concatenate - concatenates two strings
+ * @concatenated: memory space to concatenate the strings
+ * @s1: str 1
+ * @s2: str 2
+ * Return: pointer to concatenated memory space
+ */
+char *_concatenate(char *concatenated, char *s1, char *s2)
+{
+	int concat_counter, str_counter = 0;
+
+	while (*(s1 + str_counter) != '\0')
+	{
+		*(concatenated + concat_counter) = *(s1 + str_counter);
+		concat_counter++;
+		str_counter++;
+	}
+
+	str_counter = 0;
+	while (*(s2 + str_counter) != '\0')
+	{
+		*(concatenated + concat_counter) = *(s2 + str_counter);
+		concat_counter++;
+		str_counter++;
+	}
+	*(concatenated + concat_counter) = '\0';
+	return (concatenated);
+}
+
+/**
  * _strlen - func to return the length of a string
  *
  * @s: str param
@@ -12,6 +77,9 @@ int _strlen(char *s)
 {
 	int len = 0;
 	int i = 0;
+
+	if (s == NULL)
+		return (-1);
 
 	while (s[i] != '\0')
 	{
@@ -31,18 +99,40 @@ int _strlen(char *s)
  * Return: address of dest
  */
 
-char *_strcat(char *dest, char *src)
+char *_strcat(char *s1, char *s2)
 {
-	int i = 0;
-	int dest_len = 0;
+	int len1, len2 = 0;
+	char *concatenated;
 
-	while (dest[i++])
-		dest_len++;
+	if (s1 == NULL)
+	{
+		s1 = malloc(sizeof(char));
+		if (s1 == NULL)
+			return (NULL);
+		*s1 = '\0';
+	}
 
-	for (i = 0; src[i]; i++)
-		dest[dest_len++] = src[i];
+	if (s2 == NULL)
+	{
+		s2 = malloc(sizeof(char));
+		if (s2 == NULL)
+			return (NULL);
+		*s2 = '\0';
+	}
 
-	return (dest);
+	len1 = _strlen(s1);
+	len2 = _strlen(s2);
+
+	concatenated = malloc(sizeof(char) * (len1 + len2 + 1));
+
+	if (concatenated == NULL)
+	{
+		free(s1);
+		free(s2);
+		return (NULL);
+	}
+
+	return (_concatenate(concatenated, s1, s2));
 }
 
 /**
@@ -64,4 +154,3 @@ int _strcmp(char *s1, char *s2)
 		i++;
 	return (*(s1 + i) - *(s2 + i));
 }
-

@@ -29,8 +29,8 @@ int execute(char **arr, char **env, char **av, char *input, char *newline, int c
 	{
 		if (arr[0][0] == '/')
 		{
-			if (stat(Arr[0], &status) == -1)
-				no_feror(av, arr, cmd_count, input, newline);
+			if (stat(arr[0], &status) == -1)
+				no_ferror(av, arr, cmd_count, input, newline);
 			if (access(arr[0], X_OK) == -1)
 				no_ferror(av, arr, cmd_count, input, newline);
 			execve(arr[0], arr, NULL);
@@ -48,3 +48,4 @@ int execute(char **arr, char **env, char **av, char *input, char *newline, int c
 	else
 		wait(&signal);
 	return (0);
+}
