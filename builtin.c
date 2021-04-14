@@ -2,57 +2,58 @@
 
 /**
  * exit_handler - handles exit builtin
- * @arr: array of strings commands for execution
+ * @array: array of strings commands for execution
  * @line: user input
  * @newline: user input with newline truncated
  * @cmd_count: no of commands entered by the user
  * Return: 0 on success, or exit code specified by user
  */
-
-int exit_handler(char **arr, char *line, char *newline, int cmd_count)
+int exit_handler(char **array, char *line, char *newline, int cmd_count)
 {
 	int num, j = 0;
-	char *cmd_countint;
+	char *cmdnum;
 
-	if (arr[1] == NULL)
+	if (array[1] == NULL)
 	{
-		free_all(line, newline, arr);
+		free_all(line, newline, array);
 		_exit(0);
 	}
 
 	else
 	{
-		num = _atoi(arr[1]);
+		num = _atoi(array[1]);
 		if (num == -1)
 		{
-			cmd_countint = print_int(cmd_count);
+			cmdnum = print_int(cmd_count);
 			write(STDERR_FILENO, "./hsh: ", 7);
-			write(STDERR_FILENO, cmd_countint, _strlen(cmd_countint));
+			write(STDERR_FILENO, cmdnum, _strlen(cmdnum));
 			write(STDERR_FILENO, ": exit: Illegal number: ", 24);
-			while (arr[1][j] != '\0')
+			while (array[1][j] != '\0')
 				j++;
-			write(STDOUT_FILENO, arr[1], j);
+			write(STDOUT_FILENO, array[1], j);
 			write(STDOUT_FILENO, "\n", 1);
 			return (0);
 		}
-		free_all(line, newline, arr);
+		free_all(line, newline, array);
 		exit(num);
 	}
 }
 
+
 /**
  * cd_handler - handles the cd builtin
- * @arr:  array of command line strings
+ * @array:  array of command line strings
  * @env: environment variable
  * Return: 0 on success
  */
-int cd_handler(char **arr, char **env)
+
+int cd_handler(char **array, char **env)
 {
 	int i = 0;
 	char cwd[1024];
-	char *newDir;
+	char *newdir;
 
-	if (arr[1] == NULL)
+	if (array[1] == NULL)
 	{
 		if (chdir(_getenv("HOME", env)) == -1)
 		{
@@ -67,15 +68,15 @@ int cd_handler(char **arr, char **env)
 			i++;
 		cwd[i++] = '/';
 		cwd[i] = '\0';
-		newDir = _strcat(cwd, arr[1]);
-		if (newDir == NULL)
+		newdir = _strconcat(cwd, array[1]);
+		if (newdir == NULL)
 			return (0);
-		if (chdir(newDir) == -1)
+		if (chdir(newdir) == -1)
 		{
 			perror("./hsh");
 			write(STDERR_FILENO, "can't cd into directory\n", 24);
 		}
-		free(newDir);
+		free(newdir);
 	}
 	return (0);
 }
@@ -88,12 +89,12 @@ int cd_handler(char **arr, char **env)
 
 int env_handler(char **env)
 {
-	int i, len = 0;
+	int i = 0, length = 0;
 
 	while (env[i] != NULL)
 	{
-		len = _strlen(env[i]);
-		write(STDOUT_FILENO, env[i], len);
+		length = _strlen(env[i]);
+		write(STDOUT_FILENO, env[i], length);
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
@@ -101,27 +102,27 @@ int env_handler(char **env)
 }
 
 /**
- * checkBuiltin - check if command passed exist in the shell
- * @arr: array of strings to execute
+ * checkBuiltins - check if command passed exist in the shell
+ * @ar: array of strings to execute
  * @env: the environment variable
  * @line: user input
  * @newline: user input without newline character
- * @cmd_count: number of commands entered by the user
+ * @cdnum: number of commands entered by the user
  *
  * Return: 0 when builtin command is found, 1 when builtin not found
  */
 
-int checkBuiltin(char **arr, char **env, char *line, char *newline, int cmd_count)
+int checkBuiltins(char **ar, char **env, char *line, char *newline, int cdnum)
 {
-	if (arr == NULL || *arr == NULL)
+	if (ar == NULL || *ar == NULL)
 		return (1);
 	if (env == NULL || *env == NULL)
 		return (1);
-	if (_strcmp((arr[0]), "exit") == 0)
-		return (exit_handler(arr, line, newline, cmd_count));
-	else if (_strcmp((arr[0]), "cd") == 0)
-		return (cd_handler(arr, env));
-	else if (_strcmp((arr[0]), "env") == 0)
+	if (_strcmp((ar[0]), "exit") == 0)
+		return (exit_handler(ar, line, newline, cdnum));
+	else if (_strcmp((ar[0]), "cd") == 0)
+		return (cd_handler(ar, env));
+	else if (_strcmp((ar[0]), "env") == 0)
 		return (env_handler(env));
 	else
 		return (1);

@@ -23,32 +23,41 @@ typedef struct path_s
 	struct path_s *next;
 } linked_t;
 
+
 int _putchar(char c);
+
+/* exec.c */
+int execute_cmd(char **ar, char **env, char **av, char *line, char *nline, int cmd_count);
+
+/* prompt.c */
 void shellPrompt(void);
+
+/* shell.c */
 char **tokenize(char *line);
 
 /* path functions */
-linked_t *create_list(char *str);
-linked_t *addto_list(char *str, linked_t *list);
+linked_t *create_linkedt(char *str);
+linked_t *addnodes_list(char *str, linked_t *list);
 char *_getenv(const char *name, char **env);
-char *_path(char *str, char **env);
+char *path_handler(char *str, char **env);
+
 
 /* error_handling */
-void no_ferror(char **argv, char **arr, int cmd_count, char *line, char *nline);
+void error_handler(char **argv, char **ar, int cmdcount_int, char *line, char *nline);
 
 /* str helper functions */
-char *_strdup(char *str);
-int _strlen(char *s);
-char *_strcat(char *s1, char *s2);
+int _strlen(char *buf);
 int _strcmp(char *s1, char *s2);
-char *_concatenate(char *concatenated, char *s1, char *s2);
+char *_strdup(char *str);
+char *_concatenate(char *concatenate, char *s1, char *s2);
+char *_strconcat(char *s1, char *s2);
 
 /* builtin functions */
-int exit_handler(char **arr, char *line, char *newline, int cmd_count);
-int cd_handler(char **arr, char **env);
+int exit_handler(char **array, char *line, char *newline, int cmd_count);
+int cd_handler(char **array, char **env);
 int env_handler(char **env);
-int execute(char **arr, char **env, char **av, char *line, char *nline, int cmd_count);
-int checkBuiltin(char **arr, char **env, char *line, char *nline, int cmd_count);
+int checkBuiltins(char **ar, char **env, char *line, char *newline, int cmd_count);
+
 
 /* strint functions */
 int _atoi(char *s);
@@ -62,7 +71,7 @@ int ctrld_handler(char *line);
 /* memory handling */
 char *_realloc(char *p);
 void free_list(linked_t *head);
-void free_token(char **t_array);
+void free_tokens(char **t_array);
 void free_all(char *line, char *newline, char **t_array);
 
 #endif

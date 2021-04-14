@@ -1,27 +1,27 @@
 #include "shell.h"
 
 /**
- * no_ferror - write an error message if file is not found
+ * error_handler - write an error message if file is not found
  * @argv: the array of passed in function argument strings
- * @arr: array of tokens entered by the user
- * @cmd_count: the number of commands entered
+ * @ar: array of tokens entered by the user
+ * @cmdcount_int: the number of commands entered
  * @line: user input
  * @nline: user input without the nline character
  */
 
-void no_ferror(char **argv, char **arr, int cmd_count, char *line, char *nline)
+void error_handler(char **argv, char **ar, int cmdcount_int, char *line, char *nline)
 {
-	char *no;
+	char *num;
 
-	no = print_int(cmd_count);
+	num = print_int(cmdcount_int);
 	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, no, _strlen(no));
+	write(STDERR_FILENO, num, _strlen(num));
 	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, arr[0], _strlen(arr[0]));
+	write(STDERR_FILENO, ar[0], _strlen(ar[0]));
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, "not found\n", 10);
-	free(no);
-	free_all(line, nline, arr);
+	free(num);
+	free_all(line, nline, ar);
 	exit(0);
 }

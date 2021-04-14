@@ -38,31 +38,33 @@ char *_strdup(char *str)
 
 /**
  * _concatenate - concatenates two strings
- * @concatenated: memory space to concatenate the strings
+ * @concatenate: memory space to concatenate the strings
  * @s1: str 1
  * @s2: str 2
  * Return: pointer to concatenated memory space
  */
-char *_concatenate(char *concatenated, char *s1, char *s2)
+
+char *_concatenate(char *concatenate, char *s1, char *s2)
 {
-	int concat_counter, str_counter = 0;
+	int concatcounter = 0;
+	int stringcounter = 0;
 
-	while (*(s1 + str_counter) != '\0')
+	while (*(s1 + stringcounter) != '\0')
 	{
-		*(concatenated + concat_counter) = *(s1 + str_counter);
-		concat_counter++;
-		str_counter++;
+		*(concatenate + concatcounter) = *(s1 + stringcounter);
+		concatcounter++;
+		stringcounter++;
 	}
 
-	str_counter = 0;
-	while (*(s2 + str_counter) != '\0')
+	stringcounter = 0;
+	while (*(s2 + stringcounter) != '\0')
 	{
-		*(concatenated + concat_counter) = *(s2 + str_counter);
-		concat_counter++;
-		str_counter++;
+		*(concatenate + concatcounter) = *(s2 + stringcounter);
+		concatcounter++;
+		stringcounter++;
 	}
-	*(concatenated + concat_counter) = '\0';
-	return (concatenated);
+	*(concatenate + concatcounter) = '\0';
+	return (concatenate);
 }
 
 /**
@@ -92,17 +94,17 @@ int _strlen(char *s)
 }
 
 /**
- * _strcat - appends src to the dest string
- * @dest: string to append by src
- * @src: string to append to dest
+ * _strconcat - appends src to the dest string
+ * @s1: string s1
+ * @s2: string s1
  *
- * Return: address of dest
+ * Return: concatenated string
  */
-
-char *_strcat(char *s1, char *s2)
+char *_strconcat(char *s1, char *s2)
 {
-	int len1, len2 = 0;
-	char *concatenated;
+	int lengths1 = 0;
+	int lengths2 = 0;
+	char *concatenate;
 
 	if (s1 == NULL)
 	{
@@ -111,7 +113,6 @@ char *_strcat(char *s1, char *s2)
 			return (NULL);
 		*s1 = '\0';
 	}
-
 	if (s2 == NULL)
 	{
 		s2 = malloc(sizeof(char));
@@ -120,20 +121,20 @@ char *_strcat(char *s1, char *s2)
 		*s2 = '\0';
 	}
 
-	len1 = _strlen(s1);
-	len2 = _strlen(s2);
+	lengths1 = _strlen(s1);
+	lengths2 = _strlen(s2);
 
-	concatenated = malloc(sizeof(char) * (len1 + len2 + 1));
-
-	if (concatenated == NULL)
+	concatenate = malloc(sizeof(char) * (lengths1 + lengths2 + 1));
+	if (concatenate == NULL)
 	{
 		free(s1);
 		free(s2);
 		return (NULL);
 	}
 
-	return (_concatenate(concatenated, s1, s2));
+	return (_concatenate(concatenate, s1, s2));
 }
+
 
 /**
  * _strcmp - Compares pointers to two strings.

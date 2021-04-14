@@ -1,8 +1,8 @@
 #include "shell.h"
 
 /**
- * execute - func to execute a line of code in the shell
- * @arr: array of strings(commands) to be executed
+ * execute_cmd - func to execute a line of code in the shell
+ * @ar: array of strings(commands) to be executed
  * @env: environment variable
  * @av: array of cmd line argument strings
  * @line: user input
@@ -11,45 +11,42 @@
  * Return: 0 on success, otherwise -1 on failure
  */
 
-int execute(char **arr, char **env, char **av, char *line, char *nline, int cmd_count)
+int execute_cmd(char **ar, char **env, char **av, char *line, char *nline, int cmd_count)
 {
-	pid_t _pid;
-	struct stat status;
+	pid_t my_pid;
+	char *concat;
 	int signal;
-	char *abs_path;
+	struct stat status;
 
-	if (arr == NULL || *arr == NULL || av == NULL || *av == NULL)
+	if (ar == NULL || *ar == NULL || av == NULL || *av == NULL)
 		return (-1);
 	if (env == NULL || *env == NULL)
 		return (-1);
-	if (checkBuiltin(arr, env, line, nline, cmd_count) == 0)
+	if (checkBuiltins(ar, env, line, nline, cmd_count) == 0)
 		return (0);
-
-	_pid = fork();
-
-	if (_pid == -1)
+	my_pid = fork();
+	if (my_pid == -1)
 	{
-		write(STDOUT_FILENO, "error", 13);
+		write(STDOUT_FILENO, "Error forking", 13);
 		return (-1);
 	}
-	if (_pid == 0)
+	if (my_pid == 0)
 	{
-		if (arr[0][0] == '/')
+		if (ar[0][0] == '/')
 		{
-			if (stat(arr[0], &status) == -1)
-				no_ferror(av, arr, cmd_count, line, nline);
-			if (access(arr[0], X_OK) == -1)
-				no_ferror(av, arr, cmd_count, line, nline);
-			execve(arr[0], arr, NULL);
-
+			if (stat(ar[0], &status) == -1)
+				error_handler(av, ar, cmd_count, line, nline);
+			if (access(ar[0], X_OK) == -1)
+				error_handler(av, ar, cmd_count, line, nline);
+			execve(ar[0], ar, NULL);
 		}
 		else
 		{
-			abs_path = _path(arr[0], env);
-			if (abs_path == NULL)
-				no_ferror(av, arr, cmd_count, line, nline);
+			concat = path_handler(ar[0], env);
+			if (concat == NULL)
+				error_handler(av, ar, cmd_count, line, nline);
 			else
-				execve(abs_path, arr, NULL);
+				execve(concat, ar, NULL);
 		}
 	}
 	else

@@ -1,29 +1,28 @@
 #include "shell.h"
 
 /**
- * create_list - creates empty linked list the size of the path variable
+ * create_linkedt - creates empty linked list the size of the path variable
  * @str: PATH variable name
  * Return: a pointer to the empty linked list
  */
-
-linked_t *create_list(char *str)
+linked_t *create_linkedt(char *str)
 {
 	int i = 0;
 	int nodes = 1;
-	linked_t *node, *head, *tmp, *tail;
+	linked_t *node, *head, *tmp, *end;
 
 	tmp = malloc(sizeof(linked_t));
 	if (tmp == NULL)
 		return (NULL);
 	head = tmp;
 
-	tail = malloc(sizeof(linked_t));
-	if (tail == NULL)
+	end = malloc(sizeof(linked_t));
+	if (end == NULL)
 	{
 		free(tmp);
 		return (NULL);
 	}
-	tail->next = NULL;
+	end->next = NULL;
 
 	while (str[i] != '\0')
 	{
@@ -38,28 +37,29 @@ linked_t *create_list(char *str)
 		if (node == NULL)
 		{
 			free(tmp);
-			free(tail);
+			free(end);
 			return (NULL);
 		}
 		tmp->next = node;
 		tmp = tmp->next;
 		nodes--;
 	}
-	tmp->next = tail;
+	tmp->next = end;
 	return (head);
 }
 
 /**
- * addto_list - add PATH variable contents to empty
+ * addnodes_list - add PATH variable contents to empty
  * @str: PATH variable name
  * @list: pointer to the empty linked list
  * Return: pointer to the resultant linked list
  */
-linked_t *addto_list(char *str, linked_t *list)
+
+linked_t *addnodes_list(char *str, linked_t *list)
 {
 	linked_t *ptr, *head;
-	char *dirName;
-	int i = 0, j = 0, stcnt = 0, dirLen = 0;
+	char *dir;
+	int i = 0, j = 0, stcnt = 0, dirlen = 0;
 
 	if (str ==  NULL || list == NULL)
 		return (NULL);
@@ -71,31 +71,32 @@ linked_t *addto_list(char *str, linked_t *list)
 		{
 			if (str[i] != '\0')
 				i++;
-			dirName = malloc(sizeof(char) * dirLen + 2);
-			if (dirName == NULL)
+			dir = malloc(sizeof(char) * dirlen + 2);
+			if (dir == NULL)
 				return (NULL);
 			while (str[stcnt] != ':' && str[stcnt] != '\0')
 			{
-				dirName[j] = str[stcnt];
+				dir[j] = str[stcnt];
 				stcnt++;
 				j++;
 			}
-			dirName[j++] = '/';
-			dirName[j] = '\0';
+			dir[j++] = '/';
+			dir[j] = '\0';
 			stcnt = i;
 			j = 0;
-			ptr->directory = dirName;
+			ptr->directory = dir;
 			ptr = ptr->next;
 		}
 
 		else
 		{
-			dirLen++;
+			dirlen++;
 			i++;
 		}
 	}
 	return (head);
 }
+
 
 /**
  * _getenv - find env variable
@@ -106,7 +107,8 @@ linked_t *addto_list(char *str, linked_t *list)
 
 char *_getenv(const char *name, char **env)
 {
-	int i, j = 0;
+	int i = 0;
+	int j = 0;
 
 	if (name == NULL || env == NULL || *env == NULL)
 		return (NULL);
@@ -127,15 +129,15 @@ char *_getenv(const char *name, char **env)
 }
 
 /**
- * _path - iterates through PATH variable and concatenates command into it
+ * path_handler - iterates through PATH variable and concatenates command into it
  * @str: PATH variables to concatenate
  * @env: the environment variable
  * Return: pointer to concatenated string
  */
 
-char *_path(char *str, char **env)
+char *path_handler(char *str, char **env)
 {
-	char *path, *abs_path;
+	char *path, *concat;
 	linked_t *list, *tmp;
 	struct stat st;
 
@@ -147,29 +149,29 @@ char *_path(char *str, char **env)
 		write(STDERR_FILENO, "PATH not found", 14);
 		_exit(0);
 	}
-	list = create_list(path);
+	list = create_linkedt(path);
 	if (list == NULL)
 	{
-		write(STDERR_FILENO, "Errors PATH", 16);
+		write(STDERR_FILENO, "Issues with PATH", 16);
 		_exit(0);
 	}
-	list = addto_list(path, list);
+	list = addnodes_list(path, list);
 	tmp = list;
 	while (tmp != NULL)
 	{
 		if (path[0] == ':')
-			abs_path = _strcat("./", str);
+			concat = _strconcat("./", str);
 		else
-			abs_path = _strcat(tmp->directory, str);
-		if (abs_path == NULL)
+			concat = _strconcat(tmp->directory, str);
+		if (concat == NULL)
 			return (NULL);
-		if (stat(abs_path, &st) == 0 && access(abs_path, X_OK) == 0)
+		if (stat(concat, &st) == 0 && access(concat, X_OK) == 0)
 		{
 			free_list(list);
-			return (abs_path);
+			return (concat);
 		}
 		tmp = tmp->next;
-		free(abs_path);
+		free(concat);
 	}
 	free_list(list);
 	return (NULL);

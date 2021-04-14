@@ -2,33 +2,33 @@
 
 /**
  * _realloc - reallocates memory for char
- * @p: pointer to an array
+ * @ptr: pointer to an array
  * Return: pointer to new memory
  */
-
-char *_realloc(char *p)
+char *_realloc(char *ptr)
 {
 	int i = 0;
 	char *newptr;
 
-	if (p == NULL)
+	if (ptr == NULL)
 		return (NULL);
 
-	while (*(p + i) != '\n')
+	while (*(ptr + i) != '\n')
 		i++;
 
 	newptr = malloc(sizeof(char) * i + 1);
 	if (newptr == NULL)
 		return (NULL);
 	i = 0;
-	while (*(p + i) != '\n')
+	while (*(ptr + i) != '\n')
 	{
-		*(newptr + i) = *(p + i);
+		*(newptr + i) = *(ptr + i);
 		i++;
 	}
 	*(newptr + i) = '\0';
 	return (newptr);
 }
+
 /**
  * free_list - frees a linked_t list
  * @head: head of the linked list
@@ -49,12 +49,12 @@ void free_list(linked_t *head)
 }
 
 /**
- * free_token - frees the tokens in the t_array array
+ * free_tokens - frees the tokens in the t_array array
  * @t_array: array of tokens
  * Return: void
  */
 
-void free_token(char **t_array)
+void free_tokens(char **t_array)
 {
 	int i = 0;
 
@@ -66,16 +66,17 @@ void free_token(char **t_array)
 	free(t_array[i]);
 }
 
+
 /**
  * free_all - frees all of the variables used
- * @input: the original line entered by user
+ * @line: the original line entered by user
  * @newline: user input without newline char
  * @t_array: array of tokens
  * Return: void
  */
 void free_all(char *line, char *newline, char **t_array)
 {
-	free_token(t_array);
+	free_tokens(t_array);
 	free(line);
 	free(newline);
 	free(t_array);
