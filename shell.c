@@ -12,7 +12,7 @@
 int main(int ac, char **av, char **env)
 {
 	int cmd_count = 0;
-	char *input, *newline;
+	char *line, *newline;
 	size_t len = 0;
 	ssize_t chars;
 	char **t_array;
@@ -20,58 +20,58 @@ int main(int ac, char **av, char **env)
 	(void)ac, (void)av;
 	while (1)
 	{
-		input = NULL;
+		line = NULL;
 		len = 0;
 		cmd_count++;
 		if (isatty(STDIN_FILENO) == 1)
 			shellPrompt();
 		signal(SIGINT, ctrlc_handler);
-		chars = getline(&input, &len, stdin);
+		chars = getline(&line, &len, stdin);
 		if (chars == EOF || chars == -1)
-			return (ctrld_handler(input));
-		if (input[0] == '\n')
+			return (ctrld_handler(line));
+		if (line[0] == '\n')
 		{
-			free(input);
+			free(line);
 			continue;
 		}
-		newline = _realloc2(input);
+		newline = _realloc(line);
 		if (newline == NULL)
 		{
-			free(input);
+			free(line);
 			return (0);
 		}
 		t_array = tokenize(newline);
 		if (t_array == NULL)
 		{
-			free(input);
+			free(line);
 			free(newline);
 			return (0);
 		}
-		execute(t_array, env, av, input, newline, cmd_count);
-		free_all(input, newline, t_array);
+		execute(t_array, env, av, line, newline, cmd_count);
+		free_all(line, newline, t_array);
 	}
 }
 
 /**
  * tokenize - splits user input into tokens and stores into array
- * @input: input string to split
+ * @line: input string to split
  *
  * Return: array of strings(tokens)
  */
 
-char **tokenize(char *input)
+char **tokenize(char *line)
 {
 	int i = 0;
 	int t_count = 0;
 	char **t_array;
 	char *token, *t_copy;
 
-	if (input == NULL)
+	if (line == NULL)
 		return (NULL);
-	while (*(input + i) != '\0')
+	while (*(line + i) != '\0')
 	{
-		if (input[i] != ' ' && (input[i + 1] == ' ' || input[i + 1] == '\0'
-				       || input[i + 1] == '\t'))
+		if (line[i] != ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'
+				       || line[i + 1] == '\t'))
 			t_count++;
 		i++;
 	}
@@ -80,7 +80,7 @@ char **tokenize(char *input)
 	t_array = malloc(sizeof(char *) * (t_count + 1));
 	if (t_array == NULL)
 		return (NULL);
-	token = strtok(input, DELIMITERS);
+	token = strtok(line, DELIMITERS);
 	while (token != NULL)
 	{
 		t_copy = _strdup(token);

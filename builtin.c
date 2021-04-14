@@ -1,22 +1,22 @@
 #include "shell.h"
 
 /**
- * exit_hnadler - handles exit builtin
+ * exit_handler - handles exit builtin
  * @arr: array of strings commands for execution
- * @input: user input
+ * @line: user input
  * @newline: user input with newline truncated
  * @cmd_count: no of commands entered by the user
  * Return: 0 on success, or exit code specified by user
  */
 
-int exit_handler(char **arr, char *input, char *newline, int cmd_count)
+int exit_handler(char **arr, char *line, char *newline, int cmd_count)
 {
 	int num, j = 0;
 	char *cmd_countint;
 
 	if (arr[1] == NULL)
 	{
-		free_all(input, newline, arr);
+		free_all(line, newline, arr);
 		_exit(0);
 	}
 
@@ -35,7 +35,7 @@ int exit_handler(char **arr, char *input, char *newline, int cmd_count)
 			write(STDOUT_FILENO, "\n", 1);
 			return (0);
 		}
-		free_all(input, newline, arr);
+		free_all(line, newline, arr);
 		exit(num);
 	}
 }
@@ -49,7 +49,7 @@ int exit_handler(char **arr, char *input, char *newline, int cmd_count)
 int cd_handler(char **arr, char **env)
 {
 	int i = 0;
-	char currentDir[1024];
+	char cwd[1024];
 	char *newDir;
 
 	if (arr[1] == NULL)
@@ -62,12 +62,12 @@ int cd_handler(char **arr, char **env)
 	}
 	else
 	{
-		getcwd(currentDir, 1024);
-		while (currentDir[i] != '\0')
+		getcwd(cwd, 1024);
+		while (cwd[i] != '\0')
 			i++;
-		currentDir[i++] = '/';
-		currentDir[i] = '\0';
-		newDir = strcat(currentDir, arr[1]);
+		cwd[i++] = '/';
+		cwd[i] = '\0';
+		newDir = _strcat(cwd, arr[1]);
 		if (newDir == NULL)
 			return (0);
 		if (chdir(newDir) == -1)
@@ -104,21 +104,21 @@ int env_handler(char **env)
  * checkBuiltin - check if command passed exist in the shell
  * @arr: array of strings to execute
  * @env: the environment variable
- * @input: user input
+ * @line: user input
  * @newline: user input without newline character
  * @cmd_count: number of commands entered by the user
  *
  * Return: 0 when builtin command is found, 1 when builtin not found
  */
 
-int checkBuiltin(char **arr, char **env, char *input, char *newline, int cmd_count)
+int checkBuiltin(char **arr, char **env, char *line, char *newline, int cmd_count)
 {
 	if (arr == NULL || *arr == NULL)
 		return (1);
 	if (env == NULL || *env == NULL)
 		return (1);
 	if (_strcmp((arr[0]), "exit") == 0)
-		return (exit_handler(arr, input, newline, cmd_count));
+		return (exit_handler(arr, line, newline, cmd_count));
 	else if (_strcmp((arr[0]), "cd") == 0)
 		return (cd_handler(arr, env));
 	else if (_strcmp((arr[0]), "env") == 0)

@@ -135,7 +135,7 @@ char *_getenv(const char *name, char **env)
 
 char *_path(char *str, char **env)
 {
-	char *path, *concat;
+	char *path, *abs_path;
 	linked_t *list, *tmp;
 	struct stat st;
 
@@ -158,18 +158,18 @@ char *_path(char *str, char **env)
 	while (tmp != NULL)
 	{
 		if (path[0] == ':')
-			concat = strcat("./", str);
+			abs_path = _strcat("./", str);
 		else
-			concat = strcat(tmp->directory, str);
-		if (concat == NULL)
+			abs_path = _strcat(tmp->directory, str);
+		if (abs_path == NULL)
 			return (NULL);
-		if (stat(concat, &st) == 0 && access(concat, X_OK) == 0)
+		if (stat(abs_path, &st) == 0 && access(abs_path, X_OK) == 0)
 		{
 			free_list(list);
-			return (concat);
+			return (abs_path);
 		}
 		tmp = tmp->next;
-		free(concat);
+		free(abs_path);
 	}
 	free_list(list);
 	return (NULL);

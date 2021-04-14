@@ -5,11 +5,11 @@
  * @argv: the array of passed in function argument strings
  * @arr: array of tokens entered by the user
  * @cmd_count: the number of commands entered
- * @input: user input
- * @newline: user input without the newline character
+ * @line: user input
+ * @nline: user input without the nline character
  */
 
-void no_ferror(char **argv, char **arr, int cmd_count, char *input, char *newline)
+void no_ferror(char **argv, char **arr, int cmd_count, char *line, char *nline)
 {
 	char *no;
 
@@ -22,6 +22,6 @@ void no_ferror(char **argv, char **arr, int cmd_count, char *input, char *newlin
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, "not found\n", 10);
 	free(no);
-	free_all(input, newline, arr);
+	free_all(line, nline, arr);
 	exit(0);
 }

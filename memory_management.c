@@ -1,44 +1,12 @@
 #include "shell.h"
 
 /**
- * _realloc - reallocates memory for char**
- * @p: pointer to an array
- * @n: number of elements to add/subtract
- * Return: pointer to new memory
- */
-char **_realloc(char **p, int n)
-{
-	int i = 0;
-	char **newptr;
-	int new;
-
-	if (p == NULL || *p == NULL)
-		return (NULL);
-
-	while (*(p + i) != NULL)
-		i++;
-
-	new = i + n;
-	newptr = malloc(sizeof(char *) * new + 1);
-	if (newptr == NULL)
-		return (NULL);
-	i = 0;
-	while (*(p + i) != NULL)
-	{
-		*(newptr + i) = *(p + i);
-		i++;
-	}
-	*(newptr + i) = NULL;
-	return (newptr);
-}
-
-/**
- * _realloc2 - reallocates memory for char
+ * _realloc - reallocates memory for char
  * @p: pointer to an array
  * Return: pointer to new memory
  */
 
-char *_realloc2(char *p)
+char *_realloc(char *p)
 {
 	int i = 0;
 	char *newptr;
@@ -105,10 +73,10 @@ void free_token(char **t_array)
  * @t_array: array of tokens
  * Return: void
  */
-void free_all(char *input, char *newline, char **t_array)
+void free_all(char *line, char *newline, char **t_array)
 {
 	free_token(t_array);
-	free(input);
+	free(line);
 	free(newline);
 	free(t_array);
 }
