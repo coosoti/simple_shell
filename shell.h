@@ -25,7 +25,7 @@ typedef struct path_s
 
 int _putchar(char c);
 void shellPrompt(void);
-char **tokenize(char *input);
+char **tokenize(char *line);
 
 /* path functions */
 linked_t *create_list(char *str);
@@ -34,7 +34,7 @@ char *_getenv(const char *name, char **env);
 char *_path(char *str, char **env);
 
 /* error_handling */
-void no_ferror(char **argv, char **arr, int cmd_count, char *input, char *newline);
+void no_ferror(char **argv, char **arr, int cmd_count, char *line, char *nline);
 
 /* str helper functions */
 char *_strdup(char *str);
@@ -44,11 +44,11 @@ int _strcmp(char *s1, char *s2);
 char *_concatenate(char *concatenated, char *s1, char *s2);
 
 /* builtin functions */
-int exit_handler(char **arr, char *input, char *newline, int cmd_count);
+int exit_handler(char **arr, char *line, char *newline, int cmd_count);
 int cd_handler(char **arr, char **env);
 int env_handler(char **env);
-int execute(char **arr, char **env, char **av, char *input, char *newline, int cmd_count);
-int checkBuiltin(char **arr, char **env, char *input, char *newline, int cmd_count);
+int execute(char **arr, char **env, char **av, char *line, char *nline, int cmd_count);
+int checkBuiltin(char **arr, char **env, char *line, char *nline, int cmd_count);
 
 /* strint functions */
 int _atoi(char *s);
@@ -57,13 +57,12 @@ char *print_int(int num);
 
 /* signal handler */
 void ctrlc_handler(int signum);
-int ctrld_handler(char *input);
+int ctrld_handler(char *line);
 
 /* memory handling */
-char **_realloc(char **p, int n);
-char *_realloc2(char *p);
+char *_realloc(char *p);
 void free_list(linked_t *head);
 void free_token(char **t_array);
-void free_all(char *input, char *newline, char **t_array);
+void free_all(char *line, char *newline, char **t_array);
 
 #endif
