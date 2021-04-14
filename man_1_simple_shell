@@ -7,7 +7,26 @@ Simple Shell
 Simple Shell is a command line interpreter that provides a command line user interface.
 
 .SH COMMANDS
+pwd
+prints the name of the current directory. 
 
+ls
+Lists the files in the current workinfg directory.
+
+cd
+Change the current working directory.
+
+env
+It prints the variables of the current enviroment.
+
+exit
+It will exit the shell where it is currently running.
+
+hsh
+A shell program written by Ken Thompson.
+
+.SH BUGS
+No dicovered yet
 
 .SH AUTHORS
 Meron Mamo
