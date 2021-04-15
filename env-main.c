@@ -129,7 +129,7 @@ char *_getenv(const char *name, char **env)
 }
 
 /**
- * path_handler - iterates through PATH variable and concatenates command into it
+ * path_handler - iterates through PATH variable and concatenates command
  * @str: PATH variables to concatenate
  * @env: the environment variable
  * Return: pointer to concatenated string
