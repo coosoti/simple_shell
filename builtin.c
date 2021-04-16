@@ -16,7 +16,7 @@ int exit_handler(char **array, char *line, char *newline, int cmd_count)
 	if (array[1] == NULL)
 	{
 		free_all(line, newline, array);
-		_exit(2);
+		exit(2);
 	}
 
 	else
@@ -35,7 +35,7 @@ int exit_handler(char **array, char *line, char *newline, int cmd_count)
 			return (0);
 		}
 		free_all(line, newline, array);
-		exit(num);
+		_exit(num);
 	}
 }
 
