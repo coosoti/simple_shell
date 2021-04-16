@@ -11,7 +11,8 @@
  * Return: 0 on success, otherwise -1 on failure
  */
 
-int execute_cmd(char **ar, char **env, char **av, char *line, char *nline, int cmd_count)
+int execute_cmd(char **ar, char **env, char **av, char *line, char *nline,
+		int cmd_count)
 {
 	pid_t my_pid;
 	char *concat;

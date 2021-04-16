@@ -27,7 +27,8 @@ typedef struct path_s
 int _putchar(char c);
 
 /* exec.c */
-int execute_cmd(char **ar, char **env, char **av, char *line, char *nline, int cmd_count);
+int execute_cmd(char **ar, char **env, char **av, char *line, char *nline,
+		int cmd_count);
 
 /* prompt.c */
 void shellPrompt(void);
@@ -43,7 +44,8 @@ char *path_handler(char *str, char **env);
 
 
 /* error_handling */
-void error_handler(char **argv, char **ar, int cmdcount_int, char *line, char *nline);
+void error_handler(char **argv, char **ar, int cmdcount_int, char *line,
+		   char *nline);
 
 /* str helper functions */
 int _strlen(char *buf);
@@ -56,7 +58,8 @@ char *_strconcat(char *s1, char *s2);
 int exit_handler(char **array, char *line, char *newline, int cmd_count);
 int cd_handler(char **array, char **env);
 int env_handler(char **env);
-int checkBuiltins(char **ar, char **env, char *line, char *newline, int cmd_count);
+int checkBuiltins(char **ar, char **env, char *line, char *newline,
+		  int cmd_count);
 
 
 /* strint functions */

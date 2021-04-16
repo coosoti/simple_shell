@@ -9,7 +9,8 @@
  * @nline: user input without the nline character
  */
 
-void error_handler(char **argv, char **ar, int cmdcount_int, char *line, char *nline)
+void error_handler(char **argv, char **ar, int cmdcount_int, char *line,
+		   char *nline)
 {
 	char *num;
 

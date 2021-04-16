@@ -25,7 +25,7 @@ int exit_handler(char **array, char *line, char *newline, int cmd_count)
 		if (num == -1)
 		{
 			cmdnum = print_int(cmd_count);
-			write(STDERR_FILENO, "./hsh: ", 7);
+			write(STDERR_FILENO, array[0], 7);
 			write(STDERR_FILENO, cmdnum, _strlen(cmdnum));
 			write(STDERR_FILENO, ": exit: Illegal number: ", 24);
 			while (array[1][j] != '\0')
@@ -57,7 +57,7 @@ int cd_handler(char **array, char **env)
 	{
 		if (chdir(_getenv("HOME", env)) == -1)
 		{
-			perror("./hsh");
+			perror(array[0]);
 			write(STDERR_FILENO, "cd: can't cd to home\n", 21);
 		}
 	}
@@ -73,7 +73,7 @@ int cd_handler(char **array, char **env)
 			return (0);
 		if (chdir(newdir) == -1)
 		{
-			perror("./hsh");
+			perror(array[0]);
 			write(STDERR_FILENO, "can't cd into directory\n", 24);
 		}
 		free(newdir);
