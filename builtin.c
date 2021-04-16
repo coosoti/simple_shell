@@ -16,7 +16,7 @@ int exit_handler(char **array, char *line, char *newline, int cmd_count)
 	if (array[1] == NULL)
 	{
 		free_all(line, newline, array);
-		_exit(0);
+		_exit(2);
 	}
 
 	else
